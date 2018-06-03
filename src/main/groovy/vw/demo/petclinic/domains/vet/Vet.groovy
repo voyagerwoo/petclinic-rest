@@ -10,24 +10,25 @@ import javax.persistence.OneToMany
 class Vet extends Person {
     @OneToMany
     @JoinTable(name = "vet_specialties")
-    Set<Specialty> specialty
+    Set<Specialty> specialties
     Integer year
     String description
 
-    Vet(Set<Specialty> specialty, Integer year, String description) {
-        this.specialty = specialty
+    Vet(Set<Specialty> specialties, Integer year, String description) {
+        this.specialties = specialties
         this.year = year
         this.description = description
     }
 
-    Vet() {}
-
-    Set<Specialty> getSpecialty() {
-        return specialty
+    Vet() {
     }
 
-    void setSpecialty(Set<Specialty> specialty) {
-        this.specialty = specialty
+    Set<Specialty> getSpecialties() {
+        return specialties
+    }
+
+    void setSpecialties(Set<Specialty> specialties) {
+        this.specialties = specialties
     }
 
     Integer getYear() {
