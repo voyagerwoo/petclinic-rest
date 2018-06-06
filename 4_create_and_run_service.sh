@@ -19,7 +19,7 @@ ecs-cli compose --file ecs_task.yml \
   --project-name ${CLUSTER_NAME} \
     service \
   create --cluster ${CLUSTER_NAME} \
-  --deployment-max-percent 200 \
+  --deployment-max-percent 100 \
   --deployment-min-healthy-percent 50 \
   --target-group-arn ${TARGET_ARN} \
   --health-check-grace-period 60 \
