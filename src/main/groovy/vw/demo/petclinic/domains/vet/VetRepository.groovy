@@ -1,10 +1,6 @@
 package vw.demo.petclinic.domains.vet
 
-import org.springframework.dao.DataAccessException
-import org.springframework.data.repository.Repository
-import org.springframework.transaction.annotation.Transactional
+import org.springframework.data.jpa.repository.JpaRepository
 
-interface VetRepository extends Repository<Vet, Integer> {
-    @Transactional(readOnly = true)
-    Collection<Vet> findAll() throws DataAccessException
+interface VetRepository extends JpaRepository<Vet, Integer> {
 }
