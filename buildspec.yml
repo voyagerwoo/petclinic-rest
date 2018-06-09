@@ -22,7 +22,8 @@ phases:
       - echo "Build completed on `date`"
       - echo "Pushing the Docker image..."
       - docker push $DOCKER_REGISTRY_HOST/$IMAGE_REPO_NAME:latest
-      - printf '[{"name":"build.petclinic-rest.docker-image","imageUri":"%s"}]' $DOCKER_REGISTRY_HOST/$IMAGE_REPO_NAME:latest > imagedefinitions.json
+      # ECS container name
+      - printf '[{"name":"petclinic-rest","imageUri":"%s"}]' $DOCKER_REGISTRY_HOST/$IMAGE_REPO_NAME:latest > imagedefinitions.json
 
 artifacts:
     files: imagedefinitions.json
