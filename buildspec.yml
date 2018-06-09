@@ -3,6 +3,7 @@ version: 0.2
 env:
   variables:
     IMAGE_REPO_NAME: "petclinic-rest"
+    DOCKER_REGISTRY_HOST: "$AWS_ACCOUNT_ID.dkr.ecr.ap-northeast-2.amazonaws.com"
 
 phases:
   pre_build:
@@ -14,10 +15,13 @@ phases:
     commands:
       - echo "Build started on `date`"
       - echo "Building the Docker image..."
-      - mvn -X compile -Dmaven.test.skip=true
-      - mvn -X package docker:build -Dmaven.test.skip=true
+      - mvn clean package docker:build -Dmaven.test.skip=true
   post_build:
     commands:
       - echo "Build completed on `date`"
       - echo "Pushing the Docker image..."
-      - docker push $AWS_ACCOUNT_ID.dkr.ecr.ap-northeast-2.amazonaws.com/$IMAGE_REPO_NAME:latest
+      - docker push $DOCKER_REGISTRY_HOST/$IMAGE_REPO_NAME:latest
+
+cache:
+  paths:
+    - '/root/.m2/**/*'
