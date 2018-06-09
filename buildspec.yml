@@ -2,6 +2,7 @@ version: 0.2
 
 env:
   variables:
+    JAVA_HOME: "/usr/lib/jvm/java-8-openjdk-amd64"
     IMAGE_REPO_NAME: "petclinic-rest"
 
 phases:
