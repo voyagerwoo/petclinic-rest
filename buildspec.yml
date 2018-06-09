@@ -5,7 +5,6 @@ env:
     JAVA_HOME: "/usr/lib/jvm/java-8-openjdk-amd64"
     IMAGE_REPO_NAME: "petclinic-rest"
 
-
 pre_build:
     commands:
       - echo Logging in to Amazon ECR...
@@ -21,6 +20,7 @@ pre_build:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.ap-northeast-2.amazonaws.com/$IMAGE_REPO_NAME:latest
+
 cache:
   paths:
     - '/root/.m2/**/*'
