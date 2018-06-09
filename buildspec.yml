@@ -7,17 +7,17 @@ env:
 
 pre_build:
     commands:
-      - echo Logging in to Amazon ECR...
+      - echo "Logging in to Amazon ECR..."
       - `aws ecr get-login --no-include-email`
   build:
     commands:
-      - echo Build started on `date`
-      - echo Building the Docker image...
+      - echo "Build started on `date`"
+      - echo "Building the Docker image..."
       - ./mvnw clean package docker:build -Dmaven.test.skip=true
   post_build:
     commands:
-      - echo Build completed on `date`
-      - echo Pushing the Docker image...
+      - echo "Build completed on `date`"
+      - echo "Pushing the Docker image..."
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.ap-northeast-2.amazonaws.com/$IMAGE_REPO_NAME:latest
 
 cache:
