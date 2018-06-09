@@ -4,6 +4,7 @@ env:
   variables:
     JAVA_HOME: "/usr/lib/jvm/java-8-openjdk-amd64"
     IMAGE_REPO_NAME: "petclinic-rest"
+    AWS_DEFAULT_REGION: "ap-northeast-2"
 
 
 pre_build:
