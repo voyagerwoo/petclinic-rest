@@ -8,8 +8,7 @@ env:
 pre_build:
     commands:
       - echo Logging in to Amazon ECR...
-      - DOCKER_LOGIN=`aws ecr get-login --no-include-email`
-      - ${DOCKER_LOGIN}
+      - ${aws ecr get-login --no-include-email}
   build:
     commands:
       - echo Build started on `date`
