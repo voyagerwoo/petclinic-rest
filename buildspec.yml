@@ -9,7 +9,7 @@ env:
 pre_build:
     commands:
       - echo Logging in to Amazon ECR...
-      - DOCKER_LOGIN=`aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION`
+      - DOCKER_LOGIN=`aws ecr get-login --no-include-email`
       - ${DOCKER_LOGIN}
   build:
     commands:
