@@ -3,7 +3,6 @@ version: 0.2
 env:
   variables:
     IMAGE_REPO_NAME: "petclinic-rest"
-    DOCKER_REGISTRY_HOST: $AWS_ACCOUNT_ID.dkr.ecr.ap-northeast-2.amazonaws.com
 
 phases:
   pre_build:
