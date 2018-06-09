@@ -14,8 +14,8 @@ phases:
     commands:
       - echo "Build started on `date`"
       - echo "Building the Docker image..."
-      - ./mvnw -X compile -Dmaven.test.skip=true
-      - ./mvnw -X package docker:build -Dmaven.test.skip=true
+      - mvn -X compile -Dmaven.test.skip=true
+      - mvn -X package docker:build -Dmaven.test.skip=true
   post_build:
     commands:
       - echo "Build completed on `date`"
