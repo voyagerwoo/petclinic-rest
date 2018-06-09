@@ -4,11 +4,11 @@ import vw.demo.petclinic.domains.models.Person
 
 import javax.persistence.Entity
 import javax.persistence.JoinTable
-import javax.persistence.OneToMany
+import javax.persistence.ManyToMany
 
 @Entity(name='vets')
 class Vet extends Person {
-    @OneToMany
+    @ManyToMany
     @JoinTable(name = "vet_specialties")
     Set<Specialty> specialties
     Integer year
