@@ -1,13 +1,16 @@
 #!/usr/bin/env bash
 
 IMAGE_NAME="petclinic-rest"
-REPOSITORY_ID=`aws ecr create-repository --repository-name ${IMAGE_NAME} | jq -r ".repository.registryId"`
 
-if [[ -z "${REPOSITORY_ID}" ]]; then
+if aws ecr create-repository --repository-name ${IMAGE_NAME}; then
+    echo "[INFO] REPOSITORY IS CREATED."
+else
     echo "[INFO] REPOSITORY ALREADY EXISTS."
-    REPOSITORY_ID=`aws ecr describe-repositories --repository-name ${IMAGE_NAME} | jq -r ".repositories[0].registryId"`
 fi
-export DOCKER_REGISTRY_HOST="${REPOSITORY_ID}.dkr.ecr.ap-northeast-2.amazonaws.com"
+
+ACCOUNT_ID=`aws sts get-caller-identity | jq -r ".Account"`
+
+export DOCKER_REGISTRY_HOST="${ACCOUNT_ID}.dkr.ecr.ap-northeast-2.amazonaws.com"
 echo "[INFO] DOCKER_REGISTRY_HOST : ${DOCKER_REGISTRY_HOST}"
 
 if ./mvnw clean package docker:build -Dmaven.test.skip=true; then
