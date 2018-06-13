@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-bash ./1_push_to_ecr.sh
+bash ./1_create_and_push_ecr.sh
 
 
 export AWS_ACCESS_KEY_ID=`aws configure get aws_access_key_id`
