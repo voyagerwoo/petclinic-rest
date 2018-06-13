@@ -2,7 +2,6 @@
 
 export AWS_ACCESS_KEY_ID=`aws configure get aws_access_key_id`
 export AWS_SECRET_ACCESS_KEY=`aws configure get aws_secret_access_key`
-export CLUSTER_NAME=petclinic-rest
 
 export VPC_ID=`aws ec2 describe-vpcs | jq -r '.Vpcs[0].VpcId'`
 export SUBNET_ID_1=`aws ec2 describe-subnets | jq -r '.Subnets[0].SubnetId'`
@@ -18,8 +17,8 @@ ALB_SG_ID=`aws ec2 describe-security-groups --group-names ${ALB_SG_NAME}| jq -r 
 echo "ALB SECURITY GROUP : ${ALB_SG_NAME} ${ALB_SG_ID}"
 
 
-
-aws elbv2 create-load-balancer --name petclinic-alb \
+ALB_NAME=petclinic-alb
+aws elbv2 create-load-balancer --name ${ALB_NAME} \
   --subnets ${SUBNET_ID_1} ${SUBNET_ID_2} --security-groups ${ALB_SG_ID}
 
 aws elbv2 create-target-group --name petclinic-targets --protocol HTTP --port 80 --vpc-id ${VPC_ID} \

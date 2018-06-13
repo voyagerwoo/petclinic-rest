@@ -2,7 +2,6 @@
 
 export AWS_ACCESS_KEY_ID=`aws configure get aws_access_key_id`
 export AWS_SECRET_ACCESS_KEY=`aws configure get aws_secret_access_key`
-export CLUSTER_NAME=petclinic-rest
 
 export VPC_ID=`aws ec2 describe-vpcs | jq -r '.Vpcs[0].VpcId'`
 export SUBNET_ID_1=`aws ec2 describe-subnets | jq -r '.Subnets[0].SubnetId'`
