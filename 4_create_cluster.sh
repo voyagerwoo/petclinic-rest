@@ -30,7 +30,7 @@ ECS_SG_ID=`aws ec2 describe-security-groups --group-names ${ECS_SG_NAME}| jq -r 
 echo "ECS SECURITY GROUP : ${ECS_SG_NAME} ${ECS_SG_ID}"
 
 # generate cluster
-ecs-cli up --keypair voyager.woo \
+ecs-cli up --keypair petclinic \
   --security-group ${ECS_SG_ID} \
   --cluster ${CLUSTER_NAME} \
   --vpc ${VPC_ID} \

@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 IMAGE_NAME="petclinic-rest"
+REGION=`aws configure get region`
 
 if aws ecr create-repository --repository-name ${IMAGE_NAME}; then
     echo "[INFO] REPOSITORY IS CREATED."
@@ -10,7 +11,7 @@ fi
 
 ACCOUNT_ID=`aws sts get-caller-identity | jq -r ".Account"`
 
-export DOCKER_REGISTRY_HOST="${ACCOUNT_ID}.dkr.ecr.ap-northeast-2.amazonaws.com"
+export DOCKER_REGISTRY_HOST="${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com"
 echo "[INFO] DOCKER_REGISTRY_HOST : ${DOCKER_REGISTRY_HOST}"
 
 if ./mvnw clean package docker:build -Dmaven.test.skip=true; then
