@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
 
-export AWS_ACCESS_KEY_ID=`aws configure get aws_access_key_id`
-export AWS_SECRET_ACCESS_KEY=`aws configure get aws_secret_access_key`
 export CLUSTER_NAME=petclinic-rest
 
 export VPC_ID=`aws ec2 describe-vpcs | jq -r '.Vpcs[0].VpcId'`
 export SUBNET_ID_1=`aws ec2 describe-subnets | jq -r '.Subnets[0].SubnetId'`
 export SUBNET_ID_2=`aws ec2 describe-subnets | jq -r '.Subnets[1].SubnetId'`
+REGION=`aws configure get region`
 
 echo "VPC_ID : ${VPC_ID}"
 echo "SUBNET_ID_1 : ${SUBNET_ID_1}"
@@ -14,7 +13,7 @@ echo "SUBNET_ID_2 : ${SUBNET_ID_2}"
 
 # configure
 ecs-cli configure --cluster ${CLUSTER_NAME} \
-  --region ap-northeast-2 \
+  --region ${REGION} \
   --default-launch-type EC2 \
   --config-name ${CLUSTER_NAME}
 
