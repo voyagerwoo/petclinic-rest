@@ -15,16 +15,18 @@ echo "ALB SECURITY GROUP : ${ALB_SG_NAME} ${ALB_SG_ID}"
 
 
 ALB_NAME=petclinic-alb
+TARGET_NAME=petclinic-targets
+
 aws elbv2 create-load-balancer --name ${ALB_NAME} \
   --subnets ${SUBNET_ID_1} ${SUBNET_ID_2} --security-groups ${ALB_SG_ID}
 
-aws elbv2 create-target-group --name petclinic-targets --protocol HTTP --port 80 --vpc-id ${VPC_ID} \
+aws elbv2 create-target-group --name ${TARGET_NAME} --protocol HTTP --port 80 --vpc-id ${VPC_ID} \
   --health-check-protocol HTTP \
   --health-check-path /actuator/health \
   --target-type instance
 
-ALB_ARN=`aws elbv2 describe-load-balancers --names petclinic-alb | jq -r '.LoadBalancers[0].LoadBalancerArn'`
-TARGET_ARN=`aws elbv2 describe-target-groups --names petclinic-targets | jq -r '.TargetGroups[0].TargetGroupArn'`
+ALB_ARN=`aws elbv2 describe-load-balancers --names ${ALB_NAME} | jq -r '.LoadBalancers[0].LoadBalancerArn'`
+TARGET_ARN=`aws elbv2 describe-target-groups --names ${TARGET_NAME} | jq -r '.TargetGroups[0].TargetGroupArn'`
 
 aws elbv2 create-listener --load-balancer-arn ${ALB_ARN} \
   --protocol HTTP --port 80 --default-actions Type=forward,TargetGroupArn=${TARGET_ARN}
