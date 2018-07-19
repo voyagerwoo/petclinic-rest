@@ -1,11 +1,6 @@
 #!/usr/bin/env bash
 
-export CLUSTER_NAME=petclinic-rest
-
-export VPC_ID=`aws ec2 describe-vpcs | jq -r '.Vpcs[0].VpcId'`
-export SUBNET_ID_1=`aws ec2 describe-subnets | jq -r '.Subnets[0].SubnetId'`
-export SUBNET_ID_2=`aws ec2 describe-subnets | jq -r '.Subnets[1].SubnetId'`
-REGION=`aws configure get region`
+source ./env_var.sh
 
 echo "VPC_ID : ${VPC_ID}"
 echo "SUBNET_ID_1 : ${SUBNET_ID_1}"
@@ -23,7 +18,6 @@ ecs-cli configure profile \
   --profile-name  ${CLUSTER_NAME}
 
 
-ECS_SG_NAME=petclinic-ecs-sg
 ECS_SG_ID=`aws ec2 describe-security-groups --group-names ${ECS_SG_NAME}| jq -r '.SecurityGroups[0].GroupId'`
 
 echo "ECS SECURITY GROUP : ${ECS_SG_NAME} ${ECS_SG_ID}"
@@ -35,4 +29,7 @@ ecs-cli up --keypair petclinic \
   --vpc ${VPC_ID} \
   --subnets ${SUBNET_ID_1},${SUBNET_ID_2} \
   --capability-iam --size 2 \
-  --instance-type t2.micro
+  --instance-type t2.small
+
+# if failed,
+# aws cloudformation delete-stack --stack-name amazon-ecs-cli-setup-${CLUSTER_NAME}

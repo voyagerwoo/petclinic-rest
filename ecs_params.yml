@@ -1,0 +1,4 @@
+version: 1
+task_definition:
+  task_size:
+    cpu_limit: 512
