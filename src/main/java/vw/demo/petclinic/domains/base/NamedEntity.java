@@ -1,4 +1,7 @@
-package vw.demo.petclinic.domains.models
+package vw.demo.petclinic.domains.base;
+
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -12,22 +15,16 @@ import javax.persistence.MappedSuperclass;
  * @author Juergen Hoeller
  */
 @MappedSuperclass
+@Getter
+@Setter
 public class NamedEntity extends BaseEntity {
 
     @Column(name = "name")
     private String name;
 
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     @Override
     public String toString() {
-        return this.getName();
+        return this.name;
     }
 
 }

@@ -1,4 +1,8 @@
-package vw.demo.petclinic.domains.models
+package vw.demo.petclinic.domains.base;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -10,6 +14,9 @@ import javax.validation.constraints.NotEmpty;
  * @author Ken Krebs
  */
 @MappedSuperclass
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Person extends BaseEntity {
 
     @Column(name = "first_name")
@@ -19,22 +26,6 @@ public class Person extends BaseEntity {
     @Column(name = "last_name")
     @NotEmpty
     private String lastName;
-
-    public String getFirstName() {
-        return this.firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return this.lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
 
 }
 
