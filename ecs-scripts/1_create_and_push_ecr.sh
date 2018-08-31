@@ -8,9 +8,10 @@ else
     echo "[INFO] REPOSITORY ALREADY EXISTS."
 fi
 
-if bash ./build.sh; then
+if cd .. && ./build.sh; then
     DOCKER_LOGIN=`aws ecr get-login --no-include-email`
     ${DOCKER_LOGIN}
+    docker tag petclinic-rest:latest ${DOCKER_REGISTRY_HOST}/${IMAGE_NAME}:latest
     docker push ${DOCKER_REGISTRY_HOST}/${IMAGE_NAME}:latest
 else
     echo "[ERROR] MAVEN BUILD FAIL"
