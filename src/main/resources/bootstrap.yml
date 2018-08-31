@@ -1,6 +1,0 @@
-spring:
-  application:
-    name: petclinic
-  cloud:
-    config:
-      uri: http://petclinic-config-alb-1977912290.ap-northeast-2.elb.amazonaws.com

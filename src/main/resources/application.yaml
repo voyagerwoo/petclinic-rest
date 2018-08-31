@@ -4,12 +4,9 @@ spring:
       enabled: true
       path: /h2-console
 
-
 server:
   port: 9460
 
-petclinic:
-  name: AK 한방병원
 management:
   endpoints:
     web:
