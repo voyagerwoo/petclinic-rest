@@ -25,6 +25,7 @@ public class SecurityConfig {
 
                 // Entry points
                 http.authorizeRequests()//
+                        .antMatchers("/actuator/**").permitAll()
                         .antMatchers("/auth/**").permitAll()
                         .antMatchers("/open/**").permitAll()
                         .antMatchers("/h2-console/**/**").permitAll()

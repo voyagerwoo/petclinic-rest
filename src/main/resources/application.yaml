@@ -11,5 +11,5 @@ management:
   endpoints:
     web:
       exposure:
-        include: ["health", "info", "refresh"]
+        include: ["health", "info"]
 
