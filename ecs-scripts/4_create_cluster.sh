@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source ./env_var.sh
+source env_var.sh
 
 echo "VPC_ID : ${VPC_ID}"
 echo "SUBNET_ID_1 : ${SUBNET_ID_1}"

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source ./env_var.sh
+source env_var.sh
 
 # create alb security group
 aws ec2 create-security-group --group-name ${ALB_SG_NAME} \

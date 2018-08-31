@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source ./env_var.sh
+source env_var.sh
 
 ALB_SG_ID=`aws ec2 describe-security-groups --group-names ${ALB_SG_NAME}| jq -r '.SecurityGroups[0].GroupId'`
 

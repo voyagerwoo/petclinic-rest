@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source ./env_var.sh
+source env_var.sh
 
 TARGET_ARN=`aws elbv2 describe-target-groups --names petclinic-targets | jq -r '.TargetGroups[0].TargetGroupArn'`
 

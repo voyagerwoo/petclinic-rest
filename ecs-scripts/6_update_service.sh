@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source ./env_var.sh
+source env_var.sh
 
 bash ./1_create_and_push_ecr.sh
 
