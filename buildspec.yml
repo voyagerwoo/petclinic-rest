@@ -18,7 +18,7 @@ phases:
     commands:
       - echo "Build started on `date`"
       - echo "Building the Docker image..."
-      - mvn clean package docker:build -Dmaven.test.skip=true
+      - mvn clean package
   post_build:
     commands:
       - echo "Build completed on `date`"
