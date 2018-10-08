@@ -28,6 +28,7 @@ public class SecurityConfig {
                         .antMatchers("/actuator/**").permitAll()
                         .antMatchers("/auth/**").permitAll()
                         .antMatchers("/open/**").permitAll()
+                        .antMatchers("/test/**").permitAll()
                         .antMatchers("/h2-console/**/**").permitAll()
                         // Disallow everything else..
                         .anyRequest().authenticated();

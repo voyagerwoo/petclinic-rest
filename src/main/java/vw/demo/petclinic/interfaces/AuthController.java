@@ -12,6 +12,7 @@ import java.security.Principal;
 
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin("*")
 public class AuthController {
     private final UserService userService;
     private final ModelMapper modelMapper = new ModelMapper();
