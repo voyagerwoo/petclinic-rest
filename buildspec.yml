@@ -18,7 +18,8 @@ phases:
     commands:
       - echo "Build started on `date`"
       - echo "Building the Docker image..."
-      - ./build.sh
+      - mvn clean package
+      - docker build -f src/main/docker/Dockerfile -t petclinic-rest .
   post_build:
     commands:
       - echo "Build completed on `date`"
