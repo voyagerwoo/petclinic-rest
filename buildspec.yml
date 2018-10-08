@@ -11,7 +11,6 @@ phases:
     commands:
       - echo "Installing jq..."
       - curl -qL -o jq https://stedolan.github.io/jq/download/linux64/jq && chmod +x ./jq
-      - ./jq
       - echo "Logging in to Amazon ECR..."
       - DOCKER_LOGIN=`aws ecr get-login --no-include-email`
       - ${DOCKER_LOGIN}
@@ -24,7 +23,7 @@ phases:
     commands:
       - echo "Build completed on `date`"
       - echo "Pushing the Docker image..."
-      - REPOSITORY_URI=`aws ecr describe-repositories --repository-name ${IMAGE_NAME} | jq -r ".repositories[0].repositoryUri"`
+      - REPOSITORY_URI=`aws ecr describe-repositories --repository-name ${IMAGE_NAME} | ./jq -r ".repositories[0].repositoryUri"`
       - docker push ${REPOSITORY_URI}:latest
       # ECS container name
       - printf '[{"name":"petclinic-rest","imageUri":"%s"}]' ${REPOSITORY_URI}:latest > imagedefinitions.json
