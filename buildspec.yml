@@ -11,8 +11,7 @@ phases:
     commands:
       - echo "Installing jq..."
       - curl -qL -o jq https://stedolan.github.io/jq/download/linux64/jq && chmod +x ./jq
-      - yum install jq
-      - jq
+      - ./jq
       - echo "Logging in to Amazon ECR..."
       - DOCKER_LOGIN=`aws ecr get-login --no-include-email`
       - ${DOCKER_LOGIN}
