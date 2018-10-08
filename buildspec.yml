@@ -4,7 +4,7 @@ version: 0.2
 
 env:
   variables:
-    IMAGE_REPO_NAME: "petclinic-rest"
+    IMAGE_NAME: "petclinic-rest"
 
 phases:
   pre_build:
@@ -21,9 +21,10 @@ phases:
     commands:
       - echo "Build completed on `date`"
       - echo "Pushing the Docker image..."
-      - docker push $DOCKER_REGISTRY_HOST/$IMAGE_REPO_NAME:latest
+      - REPOSITORY_URI=`aws ecr describe-repositories --repository-name ${IMAGE_NAME} | jq -r ".repositories[0].repositoryUri"`
+      - docker push ${REPOSITORY_URI}:latest
       # ECS container name
-      - printf '[{"name":"petclinic-rest","imageUri":"%s"}]' $DOCKER_REGISTRY_HOST/$IMAGE_REPO_NAME:latest > imagedefinitions.json
+      - printf '[{"name":"petclinic-rest","imageUri":"%s"}]' ${REPOSITORY_URI}:latest > imagedefinitions.json
 
 artifacts:
     files: imagedefinitions.json
