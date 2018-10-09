@@ -12,6 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class UpdateTestController {
     @GetMapping("")
     public ResponseEntity updateTest() {
-        return ResponseEntity.ok("Pet clinic service update test.");
+        return ResponseEntity.ok("동물병원 서비스 업데이트 테스트.");
     }
 }
