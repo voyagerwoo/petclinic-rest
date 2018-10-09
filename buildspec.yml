@@ -26,7 +26,8 @@ phases:
       - REPOSITORY_URI=`aws ecr describe-repositories --repository-name ${IMAGE_NAME} | ./jq -r ".repositories[0].repositoryUri"`
       - docker tag petclinic-rest:latest ${REPOSITORY_URI}:latest
       - docker push ${REPOSITORY_URI}:latest
-      - printf '[{"name":"petclinic-rest","imageUri":"%s"}]' ${REPOSITORY_URI}:latest > imagedefinitions.json
+      # !ECS artifact json spec : {"name": "ECS_CONTAINER_NAME", "imageUri": "REPOSITORY_URI:TAG"}
+      - printf '[{"name":"petclinic-rest-app","imageUri":"%s"}]' ${REPOSITORY_URI}:latest > imagedefinitions.json
 
 artifacts:
     files: imagedefinitions.json
