@@ -29,6 +29,18 @@ public class AmazonEcsMetadata {
         this.isExist = isExist;
     }
 
+    public String getTaskDefinition() {
+        return taskDefinitionFamily + ":" + taskDefinitionRevision;
+    }
+
+    public String getContainerInstanceId() {
+        String[] splited = containerInstanceARN.split("/");
+        if (splited.length == 2)
+            return splited[1];
+        else
+            return containerInstanceARN;
+    }
+
     @Getter
     @NoArgsConstructor
     @ToString
