@@ -38,6 +38,8 @@ public class AmazonEcsMetadataConfig {
         try {
             String metaFileContent = Files.readAllLines(Paths.get(ecsContainerMetadataFilePath)).stream()
                     .collect(Collectors.joining("\n"));
+            log.info("### ECS_CONTAINER_METADATA_FILE Contents");
+            log.info(metaFileContent);
             return mapper.readValue(metaFileContent, AmazonEcsMetadata.class);
         } catch (IOException e){
             log.warn("There is no ECS container meta file.", e);
