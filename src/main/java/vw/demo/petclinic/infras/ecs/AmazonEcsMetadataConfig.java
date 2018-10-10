@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Configuration
 @Slf4j
 public class AmazonEcsMetadataConfig {
-    @Value("${ECS_CONTAINER_METADATA_FILE:/Users/voyagerwoo/Study/petclinic-rest/src/main/resources/ecs_container_metadata_exam.json}")
+    @Value("${ECS_CONTAINER_METADATA_FILE:}")
     private String ecsContainerMetadataFilePath;
 
     private ObjectMapper mapper = getObjectMapper();

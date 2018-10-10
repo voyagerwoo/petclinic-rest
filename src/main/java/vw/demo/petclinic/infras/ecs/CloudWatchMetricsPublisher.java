@@ -9,48 +9,51 @@ import org.springframework.boot.actuate.metrics.MetricsEndpoint;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 @Slf4j
 public class CloudWatchMetricsPublisher {
-    @Value("${petclinic.metric.namespace:ECS_CONTAINER_METRICS}")
+    @Value("${amazon.cloudwatch.metric.namespace:ECS_CONTAINER_METRICS}")
     private String nameSpace;
+    @Value("${amazon.region:ap-southeast-1}")
+    private String region;
 
     private MetricsEndpoint metricsEndpoint;
     private AmazonEcsMetadata amazonEcsMetadata;
 
-    private Dimension clusterDimension;
-    private Dimension containerInstanceIdDimension;
-    private Dimension taskDefinitionDimension;
-    private Dimension containerIdDimension;
+    private List<Dimension> dimensions;
 
     @Autowired
     public CloudWatchMetricsPublisher(MetricsEndpoint metricsEndpoint, AmazonEcsMetadata amazonEcsMetadata) {
         this.metricsEndpoint = metricsEndpoint;
         this.amazonEcsMetadata = amazonEcsMetadata;
 
-        this.clusterDimension = new Dimension().withName("CLUSTER_NAME")
-                .withValue(amazonEcsMetadata.getCluster());
-        this.containerInstanceIdDimension = new Dimension().withName("CONTAINER_INSTANCE_ID")
-                .withValue(amazonEcsMetadata.getContainerInstanceId());
-        this.taskDefinitionDimension = new Dimension().withName("TASK_DEFINITION")
-                .withValue(amazonEcsMetadata.getTaskDefinition());
-        this.containerIdDimension = new Dimension().withName("CONTAINER_ID")
-                .withValue(amazonEcsMetadata.getContainerID());
+        if (amazonEcsMetadata.isExist) {
+            this.dimensions = new ArrayList<>();
+            this.dimensions.add(new Dimension().withName("CLUSTER_NAME")
+                    .withValue(amazonEcsMetadata.getCluster()));
+            this.dimensions.add(new Dimension().withName("CONTAINER_INSTANCE_ID")
+                    .withValue(amazonEcsMetadata.getContainerInstanceId()));
+            this.dimensions.add(new Dimension().withName("TASK_DEFINITION")
+                    .withValue(amazonEcsMetadata.getTaskDefinition()));
+            this.dimensions.add(new Dimension().withName("CONTAINER_ID")
+                    .withValue(amazonEcsMetadata.getContainerID()));
+        }
     }
 
     @Scheduled(cron = "${spring.operational.metrics.cloudwatch.publish.cron:*/10 * * * * *}")
     public void publishMetrics() {
-        if(amazonEcsMetadata.isExist) {
+        if (amazonEcsMetadata.isExist) {
             metricsEndpoint.listNames().getNames().stream()
                     .map(name -> metricsEndpoint.metric(name, null))
-                    .map(metric -> metric.getMeasurements().stream().map(measurement -> {
-                        log.info(metric.getName() + " | " + measurement.getStatistic().toString() + " | " + measurement.getValue());
-                        return new MetricDatum().withMetricName(metric.getName() + "." + measurement.getStatistic().toString())
-                                .withUnit(StandardUnit.None)
-                                .withValue(measurement.getValue())
-                                .withDimensions(clusterDimension, containerIdDimension,
-                                        containerInstanceIdDimension, taskDefinitionDimension);
-                    })).flatMap(s -> s).forEach(this::publish);
+                    .map(metric -> metric.getMeasurements().stream().map(measurement -> new MetricDatum()
+                            .withMetricName(metric.getName() + "." + measurement.getStatistic().toString())
+                            .withDimensions(dimensions)
+                            .withUnit(StandardUnit.None)
+                            .withValue(measurement.getValue())))
+                    .flatMap(s -> s).forEach(this::publish);
         }
     }
 
@@ -62,7 +65,10 @@ public class CloudWatchMetricsPublisher {
 
         PutMetricDataResult response = AmazonCloudWatchClientBuilder
                 .standard()
+                .withRegion(region)
                 .build().putMetricData(request);
+
+        log.info(response.toString());
 
     }
 }
