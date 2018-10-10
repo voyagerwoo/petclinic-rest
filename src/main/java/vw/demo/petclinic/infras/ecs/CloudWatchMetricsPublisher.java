@@ -36,8 +36,8 @@ public class CloudWatchMetricsPublisher {
                     .withValue(amazonEcsMetadata.getCluster()));
             this.dimensions.add(new Dimension().withName("CONTAINER_INSTANCE_ID")
                     .withValue(amazonEcsMetadata.getContainerInstanceId()));
-            this.dimensions.add(new Dimension().withName("TASK_DEFINITION")
-                    .withValue(amazonEcsMetadata.getTaskDefinition()));
+            this.dimensions.add(new Dimension().withName("TASK_DEFINITION_FAMILY")
+                    .withValue(amazonEcsMetadata.getTaskDefinitionFamily()));
             this.dimensions.add(new Dimension().withName("CONTAINER_ID")
                     .withValue(amazonEcsMetadata.getContainerID()));
         }
@@ -67,8 +67,5 @@ public class CloudWatchMetricsPublisher {
                 .standard()
                 .withRegion(region)
                 .build().putMetricData(request);
-
-        log.info(response.toString());
-
     }
 }
