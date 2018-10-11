@@ -61,13 +61,22 @@ public class CloudWatchMetricsPublisher {
 
 
     private void publish(List<MetricDatum> datums) {
-        PutMetricDataRequest request = new PutMetricDataRequest()
-                .withNamespace(nameSpace)
-                .withMetricData(datums);
+        final int MAX_DATUM_SIZE = 20;
+        List<List<MetricDatum>> datumGroups = new ArrayList<>();
 
-        PutMetricDataResult response = AmazonCloudWatchClientBuilder
-                .standard()
-                .withRegion(region)
-                .build().putMetricData(request);
+        for(int i = 0, len = datums.size(); i<len ; i+=MAX_DATUM_SIZE) {
+            int lastNum = i + MAX_DATUM_SIZE > len ? len : i + MAX_DATUM_SIZE;
+            datumGroups.add(new ArrayList<>(datums.subList(i, lastNum)));
+        }
+
+        datumGroups.forEach(datumGroup -> {
+            PutMetricDataRequest request = new PutMetricDataRequest()
+                .withNamespace(nameSpace)
+                .withMetricData(datumGroup);
+            PutMetricDataResult response = AmazonCloudWatchClientBuilder
+                    .standard()
+                    .withRegion(region)
+                    .build().putMetricData(request);
+        });
     }
 }
