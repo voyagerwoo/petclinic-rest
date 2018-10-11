@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -43,25 +44,26 @@ public class CloudWatchMetricsPublisher {
         }
     }
 
-    @Scheduled(cron = "${spring.operational.metrics.cloudwatch.publish.cron:*/10 * * * * *}")
+    @Scheduled(cron = "${spring.operational.metrics.cloudwatch.publish.cron:*/20 * * * * *}")
     public void publishMetrics() {
         if (amazonEcsMetadata.isExist) {
-            metricsEndpoint.listNames().getNames().stream()
+            List<MetricDatum> datums = metricsEndpoint.listNames().getNames().stream()
                     .map(name -> metricsEndpoint.metric(name, null))
                     .map(metric -> metric.getMeasurements().stream().map(measurement -> new MetricDatum()
                             .withMetricName(metric.getName() + "." + measurement.getStatistic().toString())
                             .withDimensions(dimensions)
                             .withUnit(StandardUnit.None)
                             .withValue(measurement.getValue())))
-                    .flatMap(s -> s).forEach(this::publish);
+                    .flatMap(s -> s).collect(Collectors.toList());
+            publish(datums);
         }
     }
 
 
-    private void publish(MetricDatum datum) {
+    private void publish(List<MetricDatum> datums) {
         PutMetricDataRequest request = new PutMetricDataRequest()
                 .withNamespace(nameSpace)
-                .withMetricData(datum);
+                .withMetricData(datums);
 
         PutMetricDataResult response = AmazonCloudWatchClientBuilder
                 .standard()
