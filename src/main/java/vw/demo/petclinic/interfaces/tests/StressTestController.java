@@ -14,11 +14,12 @@ import java.util.concurrent.Executors;
 @RequestMapping("/test/stress")
 @Slf4j
 public class StressTestController {
+    private ExecutorService es = Executors.newFixedThreadPool(10);
+
     @GetMapping("")
     public ResponseEntity stress() {
         log.info("stress check");
-        ExecutorService es = Executors.newFixedThreadPool(20);
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 10; i++) {
             es.submit(this::calculateSqrt);
         }
         return ResponseEntity.ok(new HashMap<String, Object>() {{
